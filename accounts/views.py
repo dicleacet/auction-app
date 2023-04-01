@@ -158,3 +158,19 @@ class PasswordResetApiView(APIView):
             )},
             status=400
         )
+
+
+@extend_schema(tags=['Users - Public'], request=serializers.CreateUserSerializer)
+class UserRegistrationView(APIView):
+    serializer_class = serializers.CreateUserSerializer
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            {"detail": _('Kayıt başarılı.')},
+            status=status.HTTP_201_CREATED
+        )

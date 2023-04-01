@@ -15,7 +15,7 @@
                     <div class="field">
                         <label>Password</label>
                         <div class="control">
-                            <input type="password" class="input" v-model="password">
+                            <input type="password" class="input" v-model="password1">
                         </div>
                     </div>
 
@@ -38,7 +38,7 @@
 
                     <hr>
 
-                    Or <router-link to="/log-in">click here</router-link> to log in!
+                    Or <router-link to="/login">click here</router-link> to log in!
                 </form>
             </div>
         </div>
@@ -55,7 +55,7 @@ export default {
     data() {
         return {
             username: '',
-            password: '',
+            password1: '',
             password2: '',
             errors: []
         }
@@ -68,22 +68,23 @@ export default {
                 this.errors.push('The username is missing')
             }
 
-            if (this.password === '') {
+            if (this.password1 === '') {
                 this.errors.push('The password is too short')
             }
 
-            if (this.password !== this.password2) {
+            if (this.password1 !== this.password2) {
                 this.errors.push('The passwords doesn\'t match')
             }
 
             if (!this.errors.length) {
                 const formData = {
                     username: this.username,
-                    password: this.password
+                    password1: this.password1,
+                    password2: this.password2
                 }
 
                 axios
-                    .post("/api/v1/users/", formData)
+                    .post("/accounts/register/", formData)
                     .then(response => {
                         toast({
                             message: 'Account created, please log in!',
@@ -94,7 +95,7 @@ export default {
                             position: 'bottom-right',
                         })
 
-                        this.$router.push('/log-in')
+                        this.$router.push('/login')
                     })
                     .catch(error => {
                         if (error.response) {
