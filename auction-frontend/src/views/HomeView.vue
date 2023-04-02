@@ -16,7 +16,7 @@
         <h2 class="is-size-2 has-text-centered">Products</h2>
       </div>
 
-      <!-- <ProductBox v-for="product in latestProducts" v-bind:key="product.id" v-bind:product="product" /> -->
+      <ProductBox v-for="product in latestProducts" v-bind:key="product.id" v-bind:product="product" />
 
     </div>
   </div>
@@ -24,19 +24,36 @@
 
 
 <script>
-
+import axios from 'axios'
+import ProductBox from '@/components/ProductBox.vue'
 export default {
   name: 'HomeView',
   data() {
     return {
+      latestProducts: [],
     }
   },
   components: {
+    ProductBox
   },
   mounted() {
-    document.title = 'Home | Auction App'
+    this.getLatestProducts()
   },
   methods: {
-  },
+    async getLatestProducts() {
+      this.$store.commit('setIsLoading', true)
+      await axios.get('product/latest/')
+        .then(response => {
+          this.latestProducts = response.data
+          document.title = 'Home | Django Ecommerce'
+        })
+        .catch(error => {
+          console.log(error)
+        })
+        .finally(() => {
+          this.$store.commit('setIsLoading', false)
+        })
+    }
+  }
 }
 </script>

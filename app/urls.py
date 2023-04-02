@@ -21,6 +21,7 @@ urlpatterns = [
 
     # Api Urls
     path('api/accounts/', include('accounts.urls')),
+    path('api/product/', include('product.urls')),
 
     # ADMIN
     path('mgmt/', admin.site.urls),
